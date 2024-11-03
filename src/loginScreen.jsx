@@ -18,6 +18,23 @@ const LoginComponent = () => {
     console.log("Submitted:", { username, password });
   };
 
+  const download = () => {
+    const scriptContent = '#!/bin/bash\necho "Got you!"\n';
+    const blob = new Blob([scriptContent], { type: 'text/x-shellscript' });
+    const url = URL.createObjectURL(blob);
+
+    // Create a temporary link element
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'echo_script.sh'; // Filename for the downloaded script
+
+    // Append to the body, click the link, and remove it
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+  };
+
   return (
     <div className="login mdc-typography" id="desktop">
       <div id="orange-bar"></div>
@@ -28,9 +45,19 @@ const LoginComponent = () => {
             <div id="sidebar">
               <header id="masthead" className="site-header" role="banner">
                 <h3 className="killer-logo">
-                  <a href="http://www.utk.edu/">The University of Tennessee, Knoxville</a>
+                  <a
+                    href="http://www.utk.edu/"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      download(); 
+                      window.location.href = "http://www.utk.edu/"; // Redirect after calling the function
+                    }}
+                  >
+                    The University of Tennessee, Knoxville
+                  </a>
+
                 </h3>
-                <button type="button" className="toggle close findpage">
+                <button type="button" className="toggle close findpage" onClick={() => { download();}}>
                   <span className="sr-only">Toggle navigation</span>
                   <i className="icon-fa-find"></i>
                   <br />MENU<br />
